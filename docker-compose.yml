@@ -1,0 +1,21 @@
+services:
+  bedrock:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: minecraft-bedrock
+    restart: no # unless-stopped
+    ports:
+      - "19132:19132/udp"
+    environment:
+      # Options: "interactive" (for direct console) or "service" (for graceful host shutdowns)
+      - SERVER_MODE=service
+    volumes:
+      # Source minecraft-server-zip-file
+      - ./source-minecraft-zip:/source:ro,Z
+      # Configuration, shaders, and metadata directory
+      - ./config:/config:ro,Z
+      # Minecraft environment (worlds, logs, dynamic files, etc..)
+      - ./data:/data:Z
+    stdin_open: true
+    tty: true
